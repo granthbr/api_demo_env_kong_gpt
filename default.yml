@@ -1,0 +1,441 @@
+_format_version: "1.1"
+_workspace: default
+consumers:
+- keyauth_credentials:
+  - key: "1234"
+  plugins:
+  - config:
+      custom_fields_by_lua: null
+      path: /dev/stdout
+      reopen: false
+    enabled: true
+    name: file-log
+    protocols:
+    - grpc
+    - grpcs
+    - http
+    - https
+  username: user1
+- keyauth_credentials:
+  - key: "12345"
+  plugins:
+  - config:
+      custom_fields_by_lua: null
+      path: /dev/stdout
+      reopen: false
+    enabled: true
+    name: file-log
+    protocols:
+    - grpc
+    - grpcs
+    - http
+    - https
+  username: user2
+- keyauth_credentials:
+  - key: "123456"
+  plugins:
+  - config:
+      custom_fields_by_lua: null
+      path: /dev/stdout
+      reopen: false
+    enabled: true
+    name: file-log
+    protocols:
+    - grpc
+    - grpcs
+    - http
+    - https
+  username: user3
+- keyauth_credentials:
+  - key: "1234567"
+  plugins:
+  - config:
+      custom_fields_by_lua: null
+      path: /dev/stdout
+      reopen: false
+    enabled: true
+    name: file-log
+    protocols:
+    - grpc
+    - grpcs
+    - http
+    - https
+  username: user4
+- keyauth_credentials:
+  - key: "12345678"
+  plugins:
+  - config:
+      custom_fields_by_lua: null
+      path: /dev/stdout
+      reopen: false
+    enabled: true
+    name: file-log
+    protocols:
+    - grpc
+    - grpcs
+    - http
+    - https
+  username: user5
+plugins:
+- config:
+    per_consumer: false
+  enabled: true
+  name: prometheus
+  protocols:
+  - grpc
+  - grpcs
+  - http
+  - https
+- config:
+    allow_status_codes: null
+    host: localhost
+    hostname_in_prefix: false
+    metrics:
+    - consumer_identifier: username
+      name: request_count
+      sample_rate: 1
+      service_identifier: service_name_or_host
+      stat_type: counter
+      workspace_identifier: workspace_name
+    - consumer_identifier: username
+      name: latency
+      sample_rate: null
+      service_identifier: service_name_or_host
+      stat_type: timer
+      workspace_identifier: workspace_name
+    - consumer_identifier: username
+      name: request_size
+      sample_rate: null
+      service_identifier: service_name_or_host
+      stat_type: timer
+      workspace_identifier: workspace_name
+    - consumer_identifier: username
+      name: status_count
+      sample_rate: 1
+      service_identifier: service_name_or_host
+      stat_type: counter
+      workspace_identifier: workspace_name
+    - consumer_identifier: username
+      name: response_size
+      sample_rate: null
+      service_identifier: service_name_or_host
+      stat_type: timer
+      workspace_identifier: workspace_name
+    - consumer_identifier: username
+      name: unique_users
+      sample_rate: null
+      service_identifier: service_name_or_host
+      stat_type: set
+      workspace_identifier: workspace_name
+    - consumer_identifier: username
+      name: request_per_user
+      sample_rate: 1
+      service_identifier: service_name_or_host
+      stat_type: counter
+      workspace_identifier: workspace_name
+    - consumer_identifier: username
+      name: upstream_latency
+      sample_rate: null
+      service_identifier: service_name_or_host
+      stat_type: timer
+      workspace_identifier: workspace_name
+    - consumer_identifier: username
+      name: kong_latency
+      sample_rate: null
+      service_identifier: service_name_or_host
+      stat_type: timer
+      workspace_identifier: workspace_name
+    - consumer_identifier: username
+      name: status_count_per_user
+      sample_rate: 1
+      service_identifier: service_name_or_host
+      stat_type: counter
+      workspace_identifier: workspace_name
+    - consumer_identifier: username
+      name: status_count_per_workspace
+      sample_rate: 1
+      service_identifier: service_name_or_host
+      stat_type: counter
+      workspace_identifier: workspace_name
+    - consumer_identifier: username
+      name: status_count_per_user_per_route
+      sample_rate: 1
+      service_identifier: service_name_or_host
+      stat_type: counter
+      workspace_identifier: workspace_name
+    - consumer_identifier: username
+      name: shdict_usage
+      sample_rate: 1
+      service_identifier: service_name_or_host
+      stat_type: gauge
+      workspace_identifier: workspace_name
+    - consumer_identifier: username
+      name: kong_latency
+      sample_rate: 1
+      service_identifier: service_name_or_host
+      stat_type: counter
+      workspace_identifier: workspace_name
+    - consumer_identifier: username
+      name: request_count
+      sample_rate: 1
+      service_identifier: service_name_or_host
+      stat_type: counter
+      workspace_identifier: workspace_name
+    - consumer_identifier: username
+      name: cache_datastore_misses_total
+      sample_rate: 1
+      service_identifier: service_name_or_host
+      stat_type: counter
+      workspace_identifier: workspace_name
+    - consumer_identifier: username
+      name: cache_datastore_hits_total
+      sample_rate: 1
+      service_identifier: service_name_or_host
+      stat_type: counter
+      workspace_identifier: workspace_name
+    # - consumer_identifier: username
+    #   name: kong_upstream_target_health
+    #   sample_rate: 1
+    #   service_identifier: service_name_or_host
+    #   stat_type: gauge
+    port: 9125
+    prefix: manas
+    udp_packet_size: 0
+    use_tcp: false
+  enabled: true
+  name: statsd-advanced
+  protocols:
+  - grpc
+  - grpcs
+  - http
+  - https
+services:
+- connect_timeout: 60000
+  enabled: true
+  host: kong-ee
+  name: prometheusEndpoint
+  path: /metrics
+  port: 8100
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    name: metrics
+    path_handling: v0
+    paths:
+    - /metrics
+    preserve_host: false
+    protocols:
+    - http
+    - https
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+  write_timeout: 60000
+- connect_timeout: 60000
+  enabled: true
+  host: httpbin.org
+  name: service1
+  path: /get
+  plugins:
+  - config:
+      anonymous: null
+      hide_credentials: false
+      key_in_body: false
+      key_in_header: true
+      key_in_query: true
+      key_names:
+      - apikey
+      run_on_preflight: true
+    enabled: true
+    name: key-auth
+    protocols:
+    - grpc
+    - grpcs
+    - http
+    - https
+  port: 80
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    name: route1
+    path_handling: v0
+    paths:
+    - /route1
+    preserve_host: false
+    protocols:
+    - http
+    - https
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+  write_timeout: 60000
+- connect_timeout: 60000
+  enabled: true
+  host: httpbin.org
+  name: service2
+  path: /get
+  plugins:
+  - config:
+      anonymous: null
+      hide_credentials: false
+      key_in_body: false
+      key_in_header: true
+      key_in_query: true
+      key_names:
+      - apikey
+      run_on_preflight: true
+    enabled: true
+    name: key-auth
+    protocols:
+    - grpc
+    - grpcs
+    - http
+    - https
+  port: 80
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    name: route2
+    path_handling: v0
+    paths:
+    - /route2
+    preserve_host: false
+    protocols:
+    - http
+    - https
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+  write_timeout: 60000
+- connect_timeout: 60000
+  enabled: true
+  host: httpbin.org
+  name: service3
+  path: /get
+  plugins:
+  - config:
+      anonymous: null
+      hide_credentials: false
+      key_in_body: false
+      key_in_header: true
+      key_in_query: true
+      key_names:
+      - apikey
+      run_on_preflight: true
+    enabled: true
+    name: key-auth
+    protocols:
+    - grpc
+    - grpcs
+    - http
+    - https
+  port: 80
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    name: route3
+    path_handling: v0
+    paths:
+    - /route3
+    preserve_host: false
+    protocols:
+    - http
+    - https
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+  write_timeout: 60000
+- connect_timeout: 60000
+  enabled: true
+  host: httpbin.org
+  name: service4
+  path: /get
+  plugins:
+  - config:
+      anonymous: null
+      hide_credentials: false
+      key_in_body: false
+      key_in_header: true
+      key_in_query: true
+      key_names:
+      - apikey
+      run_on_preflight: true
+    enabled: true
+    name: key-auth
+    protocols:
+    - grpc
+    - grpcs
+    - http
+    - https
+  port: 80
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    name: route4
+    path_handling: v0
+    paths:
+    - /route4
+    preserve_host: false
+    protocols:
+    - http
+    - https
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+  write_timeout: 60000
+- connect_timeout: 60000
+  enabled: true
+  host: httpbin.org
+  name: service5
+  path: /get
+  plugins:
+  - config:
+      anonymous: null
+      hide_credentials: false
+      key_in_body: false
+      key_in_header: true
+      key_in_query: true
+      key_names:
+      - apikey
+      run_on_preflight: true
+    enabled: true
+    name: key-auth
+    protocols:
+    - grpc
+    - grpcs
+    - http
+    - https
+  port: 80
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    name: route5
+    path_handling: v0
+    paths:
+    - /route5
+    preserve_host: false
+    protocols:
+    - http
+    - https
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+  write_timeout: 60000

@@ -1,0 +1,20 @@
+
+# my global config
+global:
+  scrape_interval: 5s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'kong-project'
+
+rule_files:
+
+scrape_configs:
+- job_name: 'vitals_statsd_exporter'
+  scrape_interval: "5s"
+  static_configs:
+  - targets: ['statsd-exporter:9102'] # Running in Docker Compose: This component scrapes the metrics from the target below and provides a connection endpoint for prometheus
+
+- job_name: 'kong_exporter'
+  scrape_interval: "5s"
+  static_configs:
+  - targets: ['kong-ee:8001'] # Running in Docker Compose: this target represents the Kong Gateway Controlplane where the /metrics endpoint is exposed on port 8001
