@@ -1,0 +1,24 @@
+apiVersion: 1
+datasources:
+- name: Prometheus
+  type: prometheus
+  url: http://prometheus:9090
+  orgId: 1
+  access: proxy
+  uid: prometheus_uid
+  isDefault: true
+  editable: true
+  jsonData:
+    tlsAuth: false
+    tlsAuthWithCACert: false
+# - name: Loki
+#   type: loki
+#   url: http://loki-gateway.monitoring:3100
+#   orgId: 1
+#   access: proxy
+#   uid: loki_uid
+#   isDefault: false
+#   editable: true
+#   jsonData:
+#     tlsAuth: false
+#     tlsAuthWithCACert: false

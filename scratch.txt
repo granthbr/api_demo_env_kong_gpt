@@ -8,4 +8,4 @@ kong/deck gateway diff /deck/default.yml --kong-addr http://kong-ee:8001
 docker run -i \
 -v $(pwd):/deck \
 --network=kong-ee-network \
-kong/deck gateway diff /deck/default.yml --kong-addr http://kong-ee:8001
+kong/deck gateway sync /deck/default.yml --kong-addr http://kong-ee:8001
